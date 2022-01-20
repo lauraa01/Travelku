@@ -20,8 +20,8 @@ class CreateOrderTable extends Migration
             $table->integer('quantity');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('destination_id')->references('id')->on('destination');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('destination_id')->references('id')->on('destination')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

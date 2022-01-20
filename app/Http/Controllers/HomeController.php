@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Destination as DestinationModel;
 use App\Models\Order as OrderModel;
+use App\Models\User as UserModel;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -43,7 +44,7 @@ class HomeController extends Controller
         $orderDatas = OrderModel::join('destination', 'destination.id', 'order.destination_id')
                                 ->join('users',  'users.id', 'order.user_id')
                                 ->where('users.id', $user_id)
-                                ->get(['order.id', 'destination.id', 'destination.destination_category', 'destination.destination_name', 'destination.destination_price', 'destination.destination_duration', 'order.quantity']);
+                                ->get(['order.id', 'destination.destination_category', 'destination.destination_name', 'destination.destination_price', 'destination.destination_duration', 'order.quantity']);
 
         return view('route', ['overseas' => $overseas, 'domestic' => $domestic,'orderData' => $orderDatas]);
     }
@@ -68,8 +69,8 @@ class HomeController extends Controller
 
     public function deleteOrder($id)
     {
-        $delete = OrderModel::find($id);
-        $delete->delete();
+        $data = OrderModel::find($id);
+        $data->delete();
         return redirect('route');
     }
 
@@ -88,4 +89,15 @@ class HomeController extends Controller
         return redirect()->back();
     }
 
+    public function manage() {
+        $data = UserModel::get();
+        return view('manage', ['data' => $data]);
+    }
+
+    public function deleteUser($id)
+    {
+        $data = UserModel::find($id);
+        $data->delete();
+        return redirect('manage');
+    }
 }

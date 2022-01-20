@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Routes;
 use App\User;
 
 /*
@@ -24,6 +26,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/login', [LoginController::class, 'index']);
+Route::post('/login', [LoginController::class, 'login']);
+// Route::get('/logout', [LoginController::class, 'logout']);
+
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 Route::post('/profile',[HomeController::class, 'upload']);
@@ -35,6 +41,9 @@ Route::get('route/delete{id}',[HomeController::class, 'deleteOrder']);
 Route::get('review', [ReviewController::class, 'imageUpload'])->name('review');
 Route::post('review/proses', [ReviewController::class, 'imageUploadPost']);
 Route::get('review/delete{id}', [ReviewController::class, 'imageUploadDelete']);
+
+Route::get('manage', [HomeController::class, 'manage'])->name('manage');
+Route::get('manage/delete{id}', [HomeController::class, 'deleteUser']);
 
 Route::get('/auth/redirect', [LoginController::class, 'redirectToProvider']);
 Route::get('/auth/callback', [LoginController::class, 'handleProviderCallback']);

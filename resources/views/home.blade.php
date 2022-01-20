@@ -3,10 +3,11 @@
 @section('title', 'Home')
 
 @section('content')
-    <section class="welcome" style="background-color: #f6f8f9; text-align:center; padding: 15% 0;">
+@if (Auth::user()->role != 'admin'){
+    <section class="welcome" style="background-color: #f6f8f9; height: 25vh; text-align:center; padding: 15% 0;">
         <div class="welcome-user">
             <h2 class="text-4xl">Welcome, <span>{{ Auth::user()->name }}!</span> </h2>
-            <div class="card-body" style="color: black; padding: 1% 0;">
+            <div class="card-body" style="color: black">
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
@@ -20,6 +21,15 @@
             </div>
         </div>
     </section>
+}
+@else
+    <section class="welcome" style="background-color: #f6f8f9; height: 25vh; text-align:center; padding: 15% 0;">
+        <h2 class="text-4xl">Welcome, <span>{{ Auth::user()->name }}!</span> </h2>
+        <div class="see-more">
+            <a href="{{ route('manage') }}" class="button-content">Manage User</a>
+        </div>
+    </section>
+@endif
 
     <section class="intro">
         <div class="intro-about">

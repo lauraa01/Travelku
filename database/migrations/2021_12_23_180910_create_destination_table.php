@@ -18,7 +18,7 @@ class CreateDestinationTable extends Migration
             $table->string('destination_category');
             $table->string('destination_origin');
             $table->string('destination_name');
-            $table->string('destination_price');
+            $table->integer('destination_price');
             $table->string('destination_duration');
             $table->string('image');
             $table->timestamps();

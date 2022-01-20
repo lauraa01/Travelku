@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -71,5 +75,34 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function index()
+    {
+        return view('auth.login');
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        if($request->remember){
+            Cookie::queue('email', $credentials['email'], 60);
+        }
+
+        if(Auth::attempt($credentials)){
+            return redirect('/home');
+        }
+
+        return redirect()->back()->withErrors('Wrong credential');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('login');
     }
 }
